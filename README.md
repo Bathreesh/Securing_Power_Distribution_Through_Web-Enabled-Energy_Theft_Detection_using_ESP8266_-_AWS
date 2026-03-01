@@ -239,5 +239,5 @@ This project secures power distribution using IoT and cloud computing. The ESP82
 
 Your Name
 Department / College
-GitHub: [https://github.com/your-username](https://github.com/your-username)
+GitHub: [https://github.com/your-username](https://github.com/Bathreesh)
 
