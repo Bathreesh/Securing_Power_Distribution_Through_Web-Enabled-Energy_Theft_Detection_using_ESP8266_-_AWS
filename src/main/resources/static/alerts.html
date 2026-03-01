@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Theft Alerts - GridSecure Energy Theft Detection System">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <title>Alerts | GridSecure</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Orbitron:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .alerts-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 1rem 2rem;
+        }
+
+        .alerts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .alerts-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-box .number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-box.danger .number {
+            color: var(--status-critical);
+        }
+
+        .stat-box.success .number {
+            color: var(--status-normal);
+        }
+
+        .stat-box .label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .alerts-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            /* Increased gap */
+            margin-bottom: 2rem;
+        }
+
+        .alert-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            /* Industrial hard corners */
+            padding: 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            border-left: 4px solid var(--status-critical);
+        }
+
+        .alert-card.resolved {
+            border-left-color: var(--status-normal);
+            opacity: 0.7;
+        }
+
+        .alert-info {
+            flex: 1;
+        }
+
+        .alert-type {
+            font-weight: 700;
+            color: var(--status-critical);
+            margin-bottom: 0.25rem;
+            font-family: var(--font-heading);
+            letter-spacing: 0.5px;
+        }
+
+        .alert-card.resolved .alert-type {
+            color: var(--status-normal);
+        }
+
+        .alert-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .alert-meta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .alert-time {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .resolve-btn {
+            padding: 8px 16px;
+            background: var(--status-normal);
+            border: none;
+            color: var(--bg-dark);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .resolve-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .no-alerts {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-tab {
+            padding: 8px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .filter-tab.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--bg-dark);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-grid"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="logo">GRID<span>SECURE</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#services">Services</a></li>
+                <li><a href="internship.html">Internship</a></li>
+                <li><a href="architecture.html">Architecture</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="auth-section" id="authSection">
+                <a href="/dashboard.html" class="auth-btn" id="authBtn">Dashboard</a>
+            </div>
+            <button class="settings-btn" id="settingsBtn" aria-label="Settings">⚙️</button>
+        </div>
+    </nav>
+
+    <div class="alerts-container">
+        <div class="alerts-header">
+            <h1>Theft Alerts</h1>
+            <div class="user-info" id="userInfo" style="display: none;">
+                <span id="username">User</span> | <span id="userRole">VIEWER</span>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="alerts-stats">
+            <div class="stat-box danger">
+                <div class="number" id="activeCount">0</div>
+                <div class="label">Active Alerts</div>
+            </div>
+            <div class="stat-box success">
+                <div class="number" id="resolvedCount">0</div>
+                <div class="label">Resolved Today</div>
+            </div>
+            <div class="stat-box">
+                <div class="number" id="totalCount">0</div>
+                <div class="label">Total Alerts</div>
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs">
+            <button class="filter-tab active" onclick="filterAlerts('all')">All</button>
+            <button class="filter-tab" onclick="filterAlerts('active')">Active</button>
+            <button class="filter-tab" onclick="filterAlerts('resolved')">Resolved</button>
+        </div>
+
+        <!-- Alerts List -->
+        <div class="alerts-list" id="alertsList">
+            <div class="no-alerts">Loading alerts...</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <a href="/" class="logo">GRID<span>SECURE</span></a>
+                <p>Industry-guided IoT and cloud-based engineering solutions</p>
+                <p class="footer-collab">This project was developed as part of an academic internship collaboration with
+                    Hexhive Solutions.</p>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Hexhive Solutions. Academic Internship Project. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        let allAlerts = [];
+
+        // Dynamic auth button
+        (function () {
+            const authSection = document.getElementById('authSection');
+            const token = localStorage.getItem('jwtToken');
+            const username = localStorage.getItem('username');
+            const role = localStorage.getItem('userRole');
+
+            if (token && username) {
+                authSection.innerHTML = `
+                    <div class="user-menu">
+                        <span class="user-info-nav">${username} | ${role}</span>
+                        <button class="logout-nav-btn" onclick="handleLogout()">Logout</button>
+                    </div>
+                `;
+            }
+        })();
+
+        function handleLogout() {
+            localStorage.removeItem('jwtToken');
+            localStorage.removeItem('username');
+            localStorage.removeItem('userRole');
+            window.location.href = '/';
+        }
+
+        // Fetch alerts
+        async function fetchAlerts() {
+            try {
+                const response = await fetch('/api/alerts');
+                if (response.ok) {
+                    allAlerts = await response.json();
+                    updateStats();
+                    renderAlerts(allAlerts);
+                }
+            } catch (error) {
+                console.error('Error fetching alerts:', error);
+                document.getElementById('alertsList').innerHTML = '<div class="no-alerts">Error loading alerts</div>';
+            }
+        }
+
+        function updateStats() {
+            const active = allAlerts.filter(a => !a.resolved).length;
+            const resolved = allAlerts.filter(a => a.resolved).length;
+            document.getElementById('activeCount').textContent = active;
+            document.getElementById('resolvedCount').textContent = resolved;
+            document.getElementById('totalCount').textContent = allAlerts.length;
+        }
+
+        function filterAlerts(filter) {
+            document.querySelectorAll('.filter-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            let filtered = allAlerts;
+            if (filter === 'active') filtered = allAlerts.filter(a => !a.resolved);
+            if (filter === 'resolved') filtered = allAlerts.filter(a => a.resolved);
+
+            renderAlerts(filtered);
+        }
+
+        function renderAlerts(alerts) {
+            const container = document.getElementById('alertsList');
+
+            if (alerts.length === 0) {
+                container.innerHTML = '<div class="no-alerts">No alerts found. System is secure! ✓</div>';
+                return;
+            }
+
+            container.innerHTML = alerts.map(alert => `
+                <div class="alert-card ${alert.resolved ? 'resolved' : ''}" id="alert-${alert.id}">
+                    <div class="alert-info">
+                        <div class="alert-type">${alert.resolved ? '✓ RESOLVED' : '⚠️ ' + alert.alertType} - Meter: ${alert.meterId}</div>
+                        <div class="alert-desc">${alert.description}</div>
+                    </div>
+                    <div class="alert-meta">
+                        <span class="alert-time">${formatDateTime(alert.timestamp)}</span>
+                        ${!alert.resolved ? `<button class="resolve-btn" onclick="resolveAlert(${alert.id})">Resolve</button>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function resolveAlert(id) {
+            try {
+                const token = localStorage.getItem('jwtToken');
+                const headers = { 'Content-Type': 'application/json' };
+                if (token) headers['Authorization'] = `Bearer ${token}`;
+
+                const response = await fetch(`/api/alerts/${id}/resolve`, {
+                    method: 'PUT',
+                    headers: headers
+                });
+
+                if (response.ok) {
+                    fetchAlerts();
+                } else {
+                    alert('Failed to resolve alert');
+                }
+            } catch (error) {
+                console.error('Error resolving alert:', error);
+            }
+        }
+
+        function formatDateTime(timestamp) {
+            if (!timestamp) return 'N/A';
+            const date = new Date(timestamp);
+            return date.toLocaleString('en-IN', {
+                day: '2-digit',
+                month: 'short',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Initial load
+        fetchAlerts();
+
+        // Auto refresh every 30 seconds
+        setInterval(fetchAlerts, 30000);
+    </script>
+</body>
+
+</html>

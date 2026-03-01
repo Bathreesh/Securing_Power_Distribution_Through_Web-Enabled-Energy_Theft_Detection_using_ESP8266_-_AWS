@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!-- 
+    This is update.html - A simple form to change database data.
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Update Value</title>
+    <!-- Link to our simple CSS file for alignment -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Update Current Value</h2>
+
+        <!-- Show the user what the current value is before they change it -->
+        <p>Current value: <b th:text="${current}">0</b></p>
+
+        <!-- 
+            The Form:
+            method="post" -> Sends data to the server.
+            action="/update" -> Calls the @PostMapping("/update") in our Java code.
+        -->
+        <form method="post" action="/update">
+            <label>
+                New Value:
+                <input type="number" name="newValue" required />
+            </label>
+            <button type="submit" class="btn">Update</button>
+        </form>
+
+        <br>
+        <!-- Link to go back to the view page -->
+        <a href="/value">View Current Value</a>
+    </div>
+</body>
+
+</html>

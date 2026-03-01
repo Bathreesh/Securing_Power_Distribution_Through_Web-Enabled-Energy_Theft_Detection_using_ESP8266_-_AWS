@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Internship Collaboration - Hexhive Solutions & GridSecure">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <title>Internship Program | Hexhive Solutions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .internship-hero {
+            padding: 8rem 2rem 4rem;
+            background: linear-gradient(180deg, rgba(16, 185, 129, 0.1) 0%, transparent 100%);
+            text-align: center;
+        }
+
+        .internship-hero h1 {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--success);
+        }
+
+        .internship-details {
+            max-width: 900px;
+            margin: 0 auto 4rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: var(--text-main);
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .certificate-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .certificate-badge {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.4));
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .student-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .student-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .student-avatar {
+            width: 80px;
+            height: 80px;
+            background: var(--bg-secondary);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .modules-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .module-tag {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-grid"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="logo">GRID<span>SECURE</span></a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/dashboard.html">Dashboard</a></li>
+                <li><a href="/alert.html">Alerts</a></li>
+                <li><a href="/internship.html" class="active">Internship</a></li>
+                <li><a href="/architecture.html">Architecture</a></li>
+                <li><a href="/about.html">About</a></li>
+                <li><a href="/contact.html">Contact</a></li>
+            </ul>
+            <div class="auth-section" id="authSection">
+                <a href="/dashboard.html" class="auth-btn" id="authBtn">Dashboard</a>
+            </div>
+            <button class="settings-btn" id="settingsBtn" aria-label="Settings">⚙️</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="internship-hero">
+        <div class="container">
+            <span class="status-badge complete" style="margin-bottom: 1rem;">COMPLETED PROGRAM</span>
+            <h1>Academic Internship Program 2026</h1>
+            <p style="color: var(--text-muted); max-width: 700px; margin: 0 auto;">
+                A collaborative initiative between Hexhive Solutions and engineering students to develop
+                industry-standard IoT security solutions for modern power grids.
+            </p>
+        </div>
+    </section>
+
+    <!-- Program Details -->
+    <section class="container">
+        <div class="internship-details">
+            <h3 style="margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
+                Program Overview</h3>
+
+            <div class="detail-row">
+                <span class="detail-label">Tech Partner</span>
+                <span class="detail-value">Hexhive Solutions, Pondicherry</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Project Title</span>
+                <span class="detail-value">Securing Power Distribution Through Web-Enabled Energy Theft Detection</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Duration</span>
+                <span class="detail-value">21 Jan 2026 - 03 Feb 2026</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Technical Mentor</span>
+                <span class="detail-value">V. Durai Murugan (Technical Lead)</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Technologies</span>
+                <span class="detail-value">IoT (ESP8266), AWS Cloud, Spring Boot</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certification Section -->
+    <section class="certificate-section">
+        <div class="container">
+            <div class="certificate-badge">🎓</div>
+            <h2>Certification of Completion</h2>
+            <p style="color: var(--text-muted); max-width: 600px; margin: 1rem auto 3rem;">
+                All team members have been awarded certificates of completion by Hexhive Solutions for successfully
+                designing, developing, and deploying the GridSecure Energy Theft Detection System.
+            </p>
+
+            <div class="team-grid">
+                <!-- Team Member 1 -->
+                <div class="student-card">
+                    <div class="student-avatar">VS</div>
+                    <h4>Vishnu S</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">23TC0343</p>
+                    <div class="modules-list">
+                        <span class="module-tag">Backend Logic</span>
+                        <span class="module-tag">Database</span>
+                    </div>
+                </div>
+
+                <!-- Team Member 2 -->
+                <div class="student-card">
+                    <div class="student-avatar">JG</div>
+                    <h4>Jagadeesh G</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">23TC0246</p>
+                    <div class="modules-list">
+                        <span class="module-tag">IoT Hardware</span>
+                        <span class="module-tag">Sensors</span>
+                    </div>
+                </div>
+
+                <!-- Team Member 3 -->
+                <div class="student-card">
+                    <div class="student-avatar">KU</div>
+                    <h4>Kavinraj U.N</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">23TC0258</p>
+                    <div class="modules-list">
+                        <span class="module-tag">Cloud Integration</span>
+                        <span class="module-tag">AWS</span>
+                    </div>
+                </div>
+
+                <!-- Team Member 4 -->
+                <div class="student-card">
+                    <div class="student-avatar">ME</div>
+                    <h4>Moniesh E</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">23TC0279</p>
+                    <div class="modules-list">
+                        <span class="module-tag">Frontend UI</span>
+                        <span class="module-tag">Dashboard</span>
+                    </div>
+                </div>
+
+                <!-- Team Member 5 -->
+                <div class="student-card">
+                    <div class="student-avatar">BM</div>
+                    <h4>Bathreesh M</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">23TC0216</p>
+                    <div class="modules-list">
+                        <span class="module-tag">Documentation</span>
+                        <span class="module-tag">Testing</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <a href="/" class="logo">HEX<span>HIVE</span></a>
+                <p>Industry-guided IoT and cloud-based engineering solutions</p>
+                <p class="footer-collab">This project was developed as part of an academic internship collaboration with
+                    Hexhive Solutions.</p>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Hexhive Solutions. Academic Internship Project. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        // Use existing app.js for consistent auth behavior
+        (function () {
+            const authSection = document.getElementById('authSection');
+            const token = localStorage.getItem('jwtToken');
+            const username = localStorage.getItem('username');
+            const role = localStorage.getItem('userRole');
+
+            if (token && username) {
+                authSection.innerHTML = `
+                    <div class="user-menu">
+                        <span class="user-info-nav">${username} | ${role}</span>
+                        <button class="logout-nav-btn" onclick="handleLogout()">Logout</button>
+                    </div>
+                `;
+            }
+        })();
+
+        function handleLogout() {
+            localStorage.removeItem('jwtToken');
+            localStorage.removeItem('username');
+            localStorage.removeItem('userRole');
+            window.location.href = '/';
+        }
+    </script>
+</body>
+
+</html>

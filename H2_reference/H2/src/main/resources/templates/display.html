@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<!-- 
+    This is display.html - A simple webpage to show database data.
+    Thymeleaf is used here to put Java data into the HTML.
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Current Value</title>
+    <!-- Link to our simple CSS file for alignment -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <!-- The 'container' class centers everything on the page -->
+    <div class="container">
+        <h2>Current Database Value</h2>
+
+        <!-- 
+            th:text="${value}" 
+            This tells Spring to replace the text inside <b> with the 
+            value of the 'value' variable from the Java Controller.
+        -->
+        <p>Value: <b th:text="${value}">0</b></p>
+
+        <!-- A simple link styled as a button -->
+        <a href="/update" class="btn">Update Value</a>
+    </div>
+</body>
+
+</html>

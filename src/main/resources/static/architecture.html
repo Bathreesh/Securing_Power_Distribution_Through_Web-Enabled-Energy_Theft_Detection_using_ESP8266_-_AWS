@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="GridSecure System Architecture - IoT-based Energy Theft Detection using ESP8266 and AWS Cloud">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <title>System Architecture | GridSecure</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            /* Antigravity "Orbital Precision" Palette */
+            --bg-primary: #0B0E14;
+            /* Deep Space Black */
+            --bg-secondary: #1A1F2C;
+            --bg-card: rgba(26, 31, 44, 0.7);
+
+            /* Action Accent - Electric Cyan */
+            --accent: #4CC9F0;
+            --accent-hover: #4895EF;
+            --accent-glow: rgba(76, 201, 240, 0.3);
+
+            /* Primary Brand - IEEE Blue */
+            --primary: #00629B;
+
+            /* Typography */
+            --text-primary: #F9FAFB;
+            --text-secondary: #9CA3AF;
+            --text-muted: #6B7280;
+
+            /* Borders & UI */
+            --border: #374151;
+
+            /* IEC Status Indicators */
+            --success: #21BF06;
+            --warning: #F8FAB1;
+            --danger: #FF3D1D;
+            --info: #15B8FC;
+            /* Zima Blue */
+
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-heading: 'Orbitron', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+            background: rgba(10, 15, 28, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--text-primary);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent);
+        }
+
+        .nav-cta {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #4CC9F0, #4895EF);
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* Hero */
+        .page-hero {
+            padding: 8rem 2rem 4rem;
+            background: radial-gradient(ellipse at top center, var(--accent-glow) 0%, transparent 50%);
+            text-align: center;
+        }
+
+        .page-hero h1 {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-hero p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Content */
+        .content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* Architecture Section */
+        .architecture-section {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        /* Architecture Diagram */
+        .architecture-diagram {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .diagram-flow {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .diagram-node {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            min-width: 160px;
+            transition: all 0.3s;
+        }
+
+        .diagram-node:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(76, 201, 240, 0.2);
+        }
+
+        .diagram-node.hardware {
+            border-color: var(--info);
+        }
+
+        .diagram-node.cloud {
+            border-color: var(--warning);
+        }
+
+        .diagram-node.backend {
+            border-color: var(--success);
+        }
+
+        .diagram-node.frontend {
+            border-color: var(--accent);
+        }
+
+        .diagram-node .icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .diagram-node h4 {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .diagram-node span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .diagram-arrow {
+            font-size: 2rem;
+            color: var(--accent);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Layers Grid */
+        .layers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .layer-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .layer-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .layer-card.hardware::before {
+            background: var(--info);
+        }
+
+        .layer-card.cloud::before {
+            background: var(--warning);
+        }
+
+        .layer-card.backend::before {
+            background: var(--success);
+        }
+
+        .layer-card.frontend::before {
+            background: var(--accent);
+        }
+
+        .layer-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .layer-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .layer-card.hardware .layer-icon {
+            background: rgba(59, 130, 246, 0.2);
+        }
+
+        .layer-card.cloud .layer-icon {
+            background: rgba(245, 158, 11, 0.2);
+        }
+
+        .layer-card.backend .layer-icon {
+            background: rgba(16, 185, 129, 0.2);
+        }
+
+        .layer-card.frontend .layer-icon {
+            background: rgba(76, 201, 240, 0.2);
+        }
+
+        .layer-header h3 {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+
+        .layer-header span {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .layer-content p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tech-tag {
+            padding: 0.35rem 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Features Table */
+        .features-table {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .features-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .features-table th,
+        .features-table td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .features-table th {
+            background: var(--bg-secondary);
+            font-family: var(--font-heading);
+            font-size: 0.8rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .features-table td {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .features-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .features-table tr:hover td {
+            background: rgba(76, 201, 240, 0.05);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-badge.complete {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+
+        .status-badge.progress {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+
+        /* Data Flow */
+        .data-flow {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .flow-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .flow-number {
+            width: 32px;
+            height: 32px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .flow-content h4 {
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .flow-content p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-secondary));
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .cta-section h2 {
+            font-family: var(--font-heading);
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .cta-section p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #4CC9F0, #4895EF);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            padding: 1rem 2rem;
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .diagram-flow {
+                flex-direction: column;
+            }
+
+            .diagram-arrow {
+                transform: rotate(90deg);
+            }
+
+            .page-hero h1 {
+                font-size: 1.75rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">GRID<span>SECURE</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#services">Services</a></li>
+                <li><a href="internship.html">Internship</a></li>
+                <li><a href="architecture.html" class="active">Architecture</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="page-hero">
+        <h1>System Architecture</h1>
+        <p>Complete technical overview of the IoT-based Energy Theft Detection System using ESP8266 microcontroller and
+            AWS Cloud infrastructure.</p>
+    </section>
+
+    <!-- Content -->
+    <div class="content">
+        <!-- Architecture Diagram -->
+        <section class="architecture-section">
+            <h2 class="section-title">System Overview</h2>
+
+            <div class="architecture-diagram">
+                <div class="diagram-flow">
+                    <div class="diagram-node hardware">
+                        <div class="icon">📟</div>
+                        <h4>ESP8266 + PZEM</h4>
+                        <span>Hardware Layer</span>
+                    </div>
+                    <div class="diagram-arrow">→</div>
+                    <div class="diagram-node cloud">
+                        <div class="icon">☁️</div>
+                        <h4>AWS IoT Core</h4>
+                        <span>Cloud Gateway</span>
+                    </div>
+                    <div class="diagram-arrow">→</div>
+                    <div class="diagram-node cloud">
+                        <div class="icon">⚡</div>
+                        <h4>Lambda + DynamoDB</h4>
+                        <span>Processing</span>
+                    </div>
+                    <div class="diagram-arrow">→</div>
+                    <div class="diagram-node backend">
+                        <div class="icon">🖥️</div>
+                        <h4>Spring Boot API</h4>
+                        <span>Backend</span>
+                    </div>
+                    <div class="diagram-arrow">→</div>
+                    <div class="diagram-node frontend">
+                        <div class="icon">📊</div>
+                        <h4>Web Dashboard</h4>
+                        <span>Frontend</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Layer Details -->
+        <section class="architecture-section">
+            <h2 class="section-title">Architecture Layers</h2>
+
+            <div class="layers-grid">
+                <div class="layer-card hardware">
+                    <div class="layer-header">
+                        <div class="layer-icon">📟</div>
+                        <div>
+                            <h3>Hardware Layer</h3>
+                            <span>IoT Sensor Node</span>
+                        </div>
+                    </div>
+                    <div class="layer-content">
+                        <p>ESP8266 NodeMCU microcontroller connected to PZEM-004T energy meter for real-time voltage,
+                            current, and power monitoring. Data is transmitted via WiFi to AWS cloud.</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">ESP8266</span>
+                            <span class="tech-tag">PZEM-004T</span>
+                            <span class="tech-tag">Arduino IDE</span>
+                            <span class="tech-tag">MQTT</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layer-card cloud">
+                    <div class="layer-header">
+                        <div class="layer-icon">☁️</div>
+                        <div>
+                            <h3>Cloud Layer</h3>
+                            <span>AWS Infrastructure</span>
+                        </div>
+                    </div>
+                    <div class="layer-content">
+                        <p>AWS IoT Core receives MQTT messages from sensors. Lambda functions process data and run theft
+                            detection algorithms. DynamoDB stores readings for historical analysis.</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">AWS IoT Core</span>
+                            <span class="tech-tag">Lambda</span>
+                            <span class="tech-tag">DynamoDB</span>
+                            <span class="tech-tag">SNS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layer-card backend">
+                    <div class="layer-header">
+                        <div class="layer-icon">🖥️</div>
+                        <div>
+                            <h3>Backend Layer</h3>
+                            <span>REST API Server</span>
+                        </div>
+                    </div>
+                    <div class="layer-content">
+                        <p>Spring Boot application provides RESTful APIs for the frontend. JWT authentication secures
+                            endpoints. H2 database stores user data and alert configurations.</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Spring Boot 3</span>
+                            <span class="tech-tag">JWT Auth</span>
+                            <span class="tech-tag">H2 Database</span>
+                            <span class="tech-tag">REST API</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layer-card frontend">
+                    <div class="layer-header">
+                        <div class="layer-icon">📊</div>
+                        <div>
+                            <h3>Frontend Layer</h3>
+                            <span>Web Dashboard</span>
+                        </div>
+                    </div>
+                    <div class="layer-content">
+                        <p>Modern responsive web interface with real-time charts, alert management, and user
+                            authentication. Built with vanilla JavaScript and Chart.js for data visualization.</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">HTML5/CSS3</span>
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">Chart.js</span>
+                            <span class="tech-tag">Responsive</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Data Flow -->
+        <section class="architecture-section">
+            <h2 class="section-title">Data Flow</h2>
+
+            <div class="data-flow">
+                <div class="flow-steps">
+                    <div class="flow-step">
+                        <div class="flow-number">1</div>
+                        <div class="flow-content">
+                            <h4>Sensor Reading</h4>
+                            <p>PZEM-004T measures voltage, current, power, and frequency. ESP8266 reads values via
+                                serial interface every 5 seconds.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-number">2</div>
+                        <div class="flow-content">
+                            <h4>MQTT Transmission</h4>
+                            <p>ESP8266 publishes JSON payload to AWS IoT Core via secure MQTT connection with TLS
+                                encryption.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-number">3</div>
+                        <div class="flow-content">
+                            <h4>Anomaly Detection</h4>
+                            <p>Lambda function analyzes readings against baseline. Detects theft patterns like low
+                                voltage + high current (bypass) or meter tampering.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-number">4</div>
+                        <div class="flow-content">
+                            <h4>Alert Generation</h4>
+                            <p>If anomaly detected, SNS sends instant notifications via SMS/email. Alert is logged in
+                                database for review.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-number">5</div>
+                        <div class="flow-content">
+                            <h4>Dashboard Update</h4>
+                            <p>Web dashboard fetches data via REST API. Real-time charts and alert panels display
+                                current system state.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Table -->
+        <section class="architecture-section">
+            <h2 class="section-title">System Features</h2>
+
+            <div class="features-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Real-time Monitoring</strong></td>
+                            <td>Continuous voltage, current, and power measurement with 5-second intervals</td>
+                            <td><span class="status-badge complete">✓ Complete</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Theft Detection</strong></td>
+                            <td>Algorithm-based anomaly detection for bypass, meter tampering, and illegal connections
+                            </td>
+                            <td><span class="status-badge complete">✓ Complete</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Instant Alerts</strong></td>
+                            <td>SMS and email notifications via AWS SNS when theft is detected</td>
+                            <td><span class="status-badge complete">✓ Complete</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Web Dashboard</strong></td>
+                            <td>Interactive charts, real-time data, and alert management interface</td>
+                            <td><span class="status-badge complete">✓ Complete</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>User Authentication</strong></td>
+                            <td>JWT-based secure login with role-based access control (Admin/User/Viewer)</td>
+                            <td><span class="status-badge complete">✓ Complete</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Historical Analytics</strong></td>
+                            <td>Data storage and trend analysis for long-term monitoring</td>
+                            <td><span class="status-badge complete">✓ Complete</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Multi-Meter Support</strong></td>
+                            <td>Scalable architecture supporting multiple meter nodes per installation</td>
+                            <td><span class="status-badge complete">✓ Complete</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-section">
+            <h2>Ready to See It in Action?</h2>
+            <p>Explore the live dashboard to see real-time energy monitoring and theft detection.</p>
+            <div class="cta-buttons">
+                <a href="/dashboard.html" class="btn-primary">View Dashboard →</a>
+                <a href="/alerts.html" class="btn-secondary">View Alerts</a>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <a href="/" class="logo">GRID<span>SECURE</span></a>
+                <p>Industry-guided IoT and cloud-based engineering solutions</p>
+                <p class="footer-collab">This project was developed as part of an academic internship collaboration with
+                    Hexhive Solutions.</p>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Hexhive Solutions. Academic Internship Project. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

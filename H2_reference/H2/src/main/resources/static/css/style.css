@@ -1,0 +1,59 @@
+/* 
+   SIMPLE STYLING FOR BEGINNERS
+   This CSS file makes the website look clean and centered 
+   without using complex animations or layouts.
+*/
+
+body {
+    /* Use a simple font */
+    font-family: Arial, sans-serif;
+
+    /* Center everything on the screen */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+
+    /* Light gray background */
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+.container {
+    /* A simple box around our content */
+    background-color: white;
+    padding: 20px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+h2 {
+    color: #4A90E2;
+}
+
+/* Style the button and link */
+.btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #4A90E2;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #357ABD;
+}
+
+input {
+    padding: 8px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}

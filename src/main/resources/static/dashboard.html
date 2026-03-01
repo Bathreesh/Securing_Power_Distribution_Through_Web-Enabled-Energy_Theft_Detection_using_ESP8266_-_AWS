@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dashboard - GridSecure Energy Theft Detection System">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <title>Dashboard | GridSecure</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Orbitron:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="bg-grid"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="logo">GRID<span>SECURE</span></a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="/internship.html">Internship</a></li>
+                <li><a href="/architecture.html">Architecture</a></li>
+                <li><a href="/alerts.html">Alerts</a></li>
+                <li><a href="/about.html">About</a></li>
+                <li><a href="/contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>Energy Dashboard</h1>
+            <div class="user-badge">
+                <span class="role">Powered by Hexhive Solutions</span>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card voltage">
+                <div class="value" id="voltage-value">0</div>
+                <div class="label">Voltage (V)</div>
+            </div>
+            <div class="stat-card current">
+                <div class="value" id="current-value">0</div>
+                <div class="label">Current (A)</div>
+            </div>
+            <div class="stat-card power">
+                <div class="value" id="power-value">0</div>
+                <div class="label">Power (W)</div>
+            </div>
+            <div class="stat-card energy">
+                <div class="value" id="energy-value">0</div>
+                <div class="label">Energy Used (kWh)</div>
+            </div>
+        </div>
+
+        <!-- Update Values Card -->
+        <div class="update-card">
+            <h3>Update Sensor Values</h3>
+            <form id="updateValuesForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="update-voltage">Voltage (V)</label>
+                        <input type="number" id="update-voltage" step="0.1" placeholder="e.g., 230.0">
+                    </div>
+                    <div class="form-group">
+                        <label for="update-current">Current (A)</label>
+                        <input type="number" id="update-current" step="0.01" placeholder="e.g., 10.0">
+                    </div>
+                    <div class="form-group">
+                        <label for="update-power">Power (W) - Optional</label>
+                        <input type="number" id="update-power" step="0.1" placeholder="Auto-calculated">
+                    </div>
+                    <div class="form-group">
+                        <label for="update-energy">Energy (kWh) - Optional</label>
+                        <input type="number" id="update-energy" step="0.01" placeholder="e.g., 5.5">
+                    </div>
+                </div>
+                <button type="submit" class="update-btn" id="updateBtn">Update Values</button>
+            </form>
+            <div id="updateStatus"></div>
+        </div>
+
+        <!-- Charts -->
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>Power Consumption (Last 20 readings)</h3>
+                <div class="chart-container">
+                    <canvas id="powerChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <h3>Normal vs Theft Readings</h3>
+                <div class="chart-container">
+                    <canvas id="pieChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Readings Table -->
+        <div class="readings-table">
+            <h3>Recent Readings</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Meter ID</th>
+                        <th>Voltage (V)</th>
+                        <th>Current (A)</th>
+                        <th>Power (W)</th>
+                        <th>Timestamp</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="readingsBody">
+                    <tr>
+                        <td colspan="6" style="text-align: center; color: var(--text-muted);">Loading...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Alerts Section -->
+        <div class="alerts-section">
+            <h3>Active Theft Alerts</h3>
+            <div id="alertsList">
+                <div class="no-alerts">Loading alerts...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <a href="/" class="logo">GRID<span>SECURE</span></a>
+                <p>Industry-guided IoT and cloud-based engineering solutions</p>
+                <p class="footer-collab">This project was developed as part of an academic internship collaboration with
+                    Hexhive Solutions.</p>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Hexhive Solutions. Academic Internship Project. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Load app.js for dashboard functionality -->
+    <script src="app.js"></script>
+</body>
+
+</html>

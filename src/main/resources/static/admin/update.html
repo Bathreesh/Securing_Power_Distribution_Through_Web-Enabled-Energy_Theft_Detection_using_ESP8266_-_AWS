@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Update | GridSecure</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Orbitron:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--bg-main);
+        }
+
+        .update-container {
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: 4px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .update-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .update-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+            font-family: var(--font-heading);
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-family: 'Inter', monospace;
+            border-radius: 2px;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .btn-update {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+        }
+
+        .btn-update:hover {
+            background: var(--primary-dark);
+            box-shadow: 0 0 15px rgba(0, 150, 255, 0.4);
+        }
+
+        .status-msg {
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+            min-height: 1.5rem;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="update-container">
+        <div class="update-header">
+            <h1>System Update</h1>
+            <p style="color: var(--text-muted)">Manual Override Control</p>
+        </div>
+
+        <form id="adminUpdateForm">
+            <div class="form-group">
+                <label class="form-label">Voltage (V)</label>
+                <input type="number" step="0.1" id="voltage" name="voltage" class="form-input" placeholder="230.0">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Current (A)</label>
+                <input type="number" step="0.01" id="current" name="current" class="form-input" placeholder="10.00">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Power (W)</label>
+                <input type="number" step="0.1" id="power" name="power" class="form-input" placeholder="2300.0">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Energy Used (kWh)</label>
+                <input type="number" step="0.01" id="energy" name="energy" class="form-input" placeholder="125.50">
+            </div>
+
+            <button type="submit" class="btn-update">Update System</button>
+            <div id="statusMessage" class="status-msg"></div>
+        </form>
+
+        <a href="/dashboard.html" class="back-link">← Back to Dashboard</a>
+    </div>
+
+    <script>
+        // Load current values on page load
+        async function loadCurrentValues() {
+            try {
+                const response = await fetch('/dashboard/value');
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('voltage').value = data.voltage || '';
+                    document.getElementById('current').value = data.current || '';
+                    document.getElementById('power').value = data.power || '';
+                    document.getElementById('energy').value = data.energy || '';
+                }
+            } catch (error) {
+                console.error('Failed to load values', error);
+            }
+        }
+
+        // Handle form submit
+        document.getElementById('adminUpdateForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const status = document.getElementById('statusMessage');
+
+            btn.disabled = true;
+            btn.textContent = 'Updating...';
+            status.textContent = '';
+
+            const formData = new FormData(e.target);
+
+            try {
+                const params = new URLSearchParams();
+                formData.forEach((value, key) => {
+                    if (value) params.append(key, value);
+                });
+
+                const response = await fetch(`/dashboard/update?${params}`, {
+                    method: 'POST'
+                });
+
+                if (response.ok) {
+                    status.textContent = 'Update Successful!';
+                    status.style.color = '#4ade80'; // Success green
+                } else {
+                    status.textContent = 'Update Failed';
+                    status.style.color = '#ef4444'; // Error red
+                }
+            } catch (error) {
+                status.textContent = 'Network Error';
+                status.style.color = '#ef4444';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Update System';
+            }
+        });
+
+        loadCurrentValues();
+    </script>
+</body>
+
+</html>
